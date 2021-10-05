@@ -31,14 +31,13 @@ class TasksApiController extends Controller
 
     public function listByCreatedDate($createdDate)
     {
-
         $tasks = Task::query();
 
         if ($createdDate) {
-            $tasks = $tasks->whereDate('date', $createdDate);
+            $tasks = $tasks->where('deleted_at', null)->whereDate('date', $createdDate);
         }
 
-        $tasks = $tasks->get();
+        $tasks = $tasks->where('deleted_at', null)->whereDate('date', $createdDate)->get();
 
         return response()->json($tasks);
     }
@@ -58,7 +57,6 @@ class TasksApiController extends Controller
             $newTask = $request->post();
 
             $task = Task::create($newTask);
-            
         } catch (Exception $e) {
             return response()->json($e->getMessage(), Response::HTTP_NOT_ACCEPTABLE);
         }
@@ -66,7 +64,7 @@ class TasksApiController extends Controller
         return response()->json('Mais um usuário feliz!');
     }
 
-    public function editTask(Request $request)
+    public function editTask(Request $request, $taskId)
     {
         try {
             $this->validate($request, [
@@ -78,10 +76,8 @@ class TasksApiController extends Controller
             ]);
 
             $newTask = $request->post();
-            dd($newTask);
 
-            $task = Task::create($newTask);
-            
+            $edit = Task::where('id', $taskId)->update($newTask);
         } catch (Exception $e) {
             return response()->json($e->getMessage(), Response::HTTP_NOT_ACCEPTABLE);
         }
@@ -92,6 +88,8 @@ class TasksApiController extends Controller
     public function delete(int $taskId)
     {
         $task = Task::where('id', $taskId)->first();
+
+        
 
         if (is_null($task)) {
             return response()->json('Nenhuma task encontrado com esse ID', Response::HTTP_NOT_ACCEPTABLE);
