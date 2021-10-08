@@ -85,6 +85,19 @@ class TasksApiController extends Controller
         return response()->json('Task editada com sucesso!');
     }
 
+    public function toggleCompleteTask(Request $request, $taskId)
+    {
+        try {
+
+            $complete = Task::where('id', $taskId)->first();
+            $complete->toggleComplete();
+
+            return response()->json($complete); 
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), Response::HTTP_NOT_ACCEPTABLE);
+        }  
+    }
+
     public function delete(int $taskId)
     {
         $task = Task::where('id', $taskId)->first();

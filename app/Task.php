@@ -28,4 +28,9 @@ class Task extends Model
     public function userRelation() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function toggleComplete() {
+        $this->update(['is_completed' => !$this->is_completed]);
+        return $this;
+    }
 }

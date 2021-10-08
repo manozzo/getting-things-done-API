@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
             $table->dateTime('date')->nullable(false)->comment('Dia da task');
             $table->dateTime('task_start')->nullable(false)->comment('Início da task');
             $table->dateTime('task_end')->nullable(false)->comment('Fim da task');
-            $table->boolean('is_completed')->default(0);
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

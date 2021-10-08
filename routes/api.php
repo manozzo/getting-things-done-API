@@ -28,6 +28,7 @@ Route::prefix('task')->group(function() {
     Route::post('/save', 'Api\TasksApiController@createTask');
     Route::post('/edit/{id}', 'Api\TasksApiController@editTask');
     Route::delete('/delete/{id}', 'Api\TasksApiController@delete');
+    Route::post('/toggle/{id}', 'Api\TasksApiController@toggleCompleteTask');
 });
 
 Route::prefix('tasks')->group(function() {
